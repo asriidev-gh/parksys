@@ -1,0 +1,2 @@
+export const SET_PARKING = "SET_PARKING";
+export const UNSET_PARKING = "UNSET_PARKING";

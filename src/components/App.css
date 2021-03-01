@@ -1,0 +1,16 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
+@import "~bootstrap/scss/bootstrap";
+* {
+  /* box-sizing: border-box; */
+  margin: auto;
+  padding: 0;
+  font-family: 'Lato', sans-serif;  
+  max-width: 500px;
+  /* background-color: antiquewhite;   */
+}
+
+body{
+    li {
+        list-style-type: none;
+    }
+}
