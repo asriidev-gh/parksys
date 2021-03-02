@@ -1,9 +1,8 @@
-import { Button, Card } from 'react-bootstrap';
 import React from 'react';
-import { Container } from 'react-bootstrap';
 import { useSelector,useDispatch } from "react-redux";
 import { unsetParkingSlot } from '../redux/parking/parking.actions';
 import diff_hours from '../utils/timeDiff';
+import { Container, Button, Card } from 'react-bootstrap';
 
 const ParkingMap = (props) => {
     const parkedSlots = useSelector(state => state.parking.parkedSlots);
@@ -23,7 +22,7 @@ const ParkingMap = (props) => {
         {"slotNo":7,"carSize":carSizeLP},
         {"slotNo":8,"carSize":carSizeLP},
         {"slotNo":9,"carSize":carSizeLP},
-    ];
+    ];    
 
     const onClickUnpark = (e) => {
         const parkingSlot = e.target.dataset.id;
@@ -34,17 +33,22 @@ const ParkingMap = (props) => {
             props.setParkingReceiptDetails(calculateTotalParkingRates(parkedDetails[0]));
 
             dispatch(unsetParkingSlot(parkedDetails[0]));
+
+            props.showReceipt();
         }
     }
 
     const calculateTotalParkingRates = ({carSize,timeIn}) => {
         let currentDateTime = new Date();
         let timeConsumed = diff_hours(new Date(timeIn),currentDateTime);
+        let totalRates = 0;
+        
         const spRatesPerHr = 20;
         const mpRatesPerHr = 60;
         const lpRatesPerHr = 100;
         const flatRate = 40;
-        let totalRates = 0;
+        const flatRate24hrs = 5000;
+        
         if(timeConsumed < 4){
             totalRates = flatRate;
         }else if(timeConsumed > 3 && timeConsumed < 24){
@@ -53,16 +57,19 @@ const ParkingMap = (props) => {
                 case "1": totalRates = flatRate + ((timeConsumed-3)*mpRatesPerHr);
                 case "2": totalRates = flatRate + ((timeConsumed-3)*lpRatesPerHr);
             }
-        }else if(timeConsumed > 24){
-            totalRates = 5000
+        }else if(timeConsumed >= 24){
+            if(timeConsumed == 24){
+                totalRates = flatRate24hrs;
+            }else{
+                totalRates = (timeConsumed/24) * flatRate24hrs;
+            }            
         }
 
         return {"totalRates":totalRates,"timeConsumed":timeConsumed};
     }    
 
     return (
-        <Container>
-            <hr/>
+        <Container>            
             <h3>Parking Slots</h3>
             {slotsMap.map((slot,key)=>{                
                 const taken = parkedSlots.some(val => {
@@ -81,14 +88,14 @@ const ParkingMap = (props) => {
                 }
                 
                 return <li key={key}>
-                        <Card>
+                        <Card style={{margin:'10px',padding:'10px'}}>
                         <h5>SLOT# {slot.slotNo}-{slot.carSize}</h5>
                         {taken == true ? 
                             <div>
-                            <b>Name:{name}</b>
-                            <Button style={{ margin: '5px' }} variant="secondary" size="sm" onClick={onClickUnpark}>
-                                <div data-id={parkedId}> Un-Park</div>
-                            </Button> 
+                                <b>Name:{name}</b>
+                                <Button style={{ margin: '5px' }} variant="secondary" size="sm" onClick={onClickUnpark}>
+                                    <div data-id={parkedId}> Un-Park</div>
+                                </Button>
                             </div>
                         : ""}
                         </Card>

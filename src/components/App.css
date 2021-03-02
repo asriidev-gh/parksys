@@ -2,10 +2,10 @@
 @import "~bootstrap/scss/bootstrap";
 * {
   /* box-sizing: border-box; */
-  margin: auto;
+  /* margin: auto;
   padding: 0;
   font-family: 'Lato', sans-serif;  
-  max-width: 500px;
+  max-width: 500px; */
   /* background-color: antiquewhite;   */
 }
 
