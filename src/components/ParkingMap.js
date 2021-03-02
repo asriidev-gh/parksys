@@ -61,7 +61,15 @@ const ParkingMap = (props) => {
             if(timeConsumed == 24){
                 totalRates = flatRate24hrs;
             }else{
-                totalRates = (timeConsumed/24) * flatRate24hrs;
+                
+                let totalDaysCharged = (Math.round(timeConsumed/24)) * flatRate24hrs;
+                let excessHrsCharged = timeConsumed%24;
+
+                switch (carSize) {
+                    case "0": totalRates = totalDaysCharged + (excessHrsCharged*spRatesPerHr);
+                    case "1": totalRates = totalDaysCharged + (excessHrsCharged*mpRatesPerHr);
+                    case "2": totalRates = totalDaysCharged + (excessHrsCharged*lpRatesPerHr);
+                }
             }            
         }
 

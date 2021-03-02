@@ -19,7 +19,7 @@ const MyModal = (props) => {
                 <p>                
                     Total Parking Charge: {props.totalrates ? props.totalrates : 0}
                     <br/>
-                    Total Parking Hours: {props.timeconsumed ? props.timeconsumed : 0}
+                    Total Parking Hours: {props.timeconsumed ? props.timeconsumed : 1}
                 </p>
                 </Modal.Body>
                 <Modal.Footer>
